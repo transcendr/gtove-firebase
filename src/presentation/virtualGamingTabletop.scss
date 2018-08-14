@@ -1,0 +1,209 @@
+.controlFrame {
+  position: relative;
+  line-height: 0;
+  height: 100%;
+  display: flex;
+  flex-flow: row;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.menuControl {
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 1;
+  text-shadow: 0 0 5px white;
+}
+
+.controlPanel {
+  position: absolute;
+  line-height: 12pt;
+  height: calc(100% - 2px);
+  display: flex;
+  flex-flow: column;
+  z-index: 2;
+  background-color: white;
+  border: 1px solid grey;
+  transition: transform .3s ease;
+  transform: translate(-100%, 0);
+
+  &.open {
+    transform: translate(0, 0);
+  }
+
+  .openMenuControl {
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  .scrollWrapper {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .buttonsPanel {
+      display: inline-block;
+      width: 6em;
+
+      button {
+        display: block;
+        width: 100%;
+        min-height: 40px;
+      }
+    }
+  }
+
+  .labelSizeInput {
+    text-align: center;
+    display: block;
+    width: 100%;
+
+    input {
+      width: 90%;
+      margin: 0 auto;
+    }
+  }
+
+}
+
+.googleAvatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+
+  &.plain {
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 24px;
+    line-height: 30px;
+    display: inline-block;
+  }
+}
+
+.loggedInAvatar {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 1;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+
+  .googleAvatar.plain {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+
+  .connectedCount {
+    position: absolute;
+    bottom: -0.5em;
+    right: 0;
+    min-width: 1em;
+    height: 1em;
+    line-height: 1em;
+    text-align: center;
+    border-radius: 50%;
+    background-color: orange;
+
+    &.gmConnected {
+      background-color: lightgreen;
+    }
+
+  }
+}
+
+.avatarPanel {
+  position: absolute;
+  top: 60px;
+  right: 5px;
+  background-color: white;
+  border: 1px solid black;
+  width: 10em;
+  padding: 1em;
+  z-index: 1;
+  line-height: 1em;
+
+  &:before, &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+
+  &:after {
+    top: -16px;
+    right: 11px;
+    border-color: transparent transparent white transparent;
+    border-width: 8px;
+  }
+
+  &:before {
+    top: -18px;
+    right: 10px;
+    border-color: transparent transparent black transparent;
+    border-width: 9px;
+  }
+
+  & > div {
+    margin: 0.5em 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.userIsGM {
+      background-color: lightgreen;
+    }
+  }
+
+  .googleAvatar {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+  }
+
+  span {
+    margin-left: 0.5em;
+    vertical-align: middle;
+  }
+
+}
+
+.mainArea {
+  flex: 1;
+  line-height: 12pt;
+  position: relative;
+}
+
+.toastContainer {
+  display: inline-block;
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%);
+  width: auto;
+  min-width: 320px;
+  margin-left: 0;
+}
+
+.webLinkModal {
+  width: 34em;
+  max-width: 95%;
+
+  textarea {
+    width: 95%;
+    resize: vertical;
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.rectangleTemplateIcon {
+  width: 60px;
+  height: 60px;
+  margin: 10px auto;
+}

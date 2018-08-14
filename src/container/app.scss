@@ -1,0 +1,11 @@
+@import "~material-design-icons/iconfont/material-icons.css";
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overscroll-behavior-y: contain;
+}
+
+#root, .fullHeight {
+  height: 100%;
+}
