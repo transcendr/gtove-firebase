@@ -38,6 +38,7 @@ import {
     getTabletopFromStore,
     getTabletopIdFromStore,
     getTabletopValidationFromStore,
+    getFirebaseSettingsFromStore,
     ReduxStoreType
 } from '../redux/mainReducer';
 import {
@@ -73,6 +74,7 @@ import BundleFileEditor from './bundleFileEditor';
 import {BundleType, isBundle} from '../util/bundleUtils';
 import {setBundleIdAction} from '../redux/bundleReducer';
 import TemplateEditor from './templateEditor';
+import {updateFirebaseSettingAction, FirebaseSettingReducerType} from '../redux/firebaseReducer';
 
 import './virtualGamingTabletop.css';
 
@@ -86,6 +88,7 @@ interface VirtualGamingTabletopProps {
     tabletopValidation: TabletopValidationType;
     myPeerId: MyPeerIdReducerType;
     dispatch: Dispatch<ReduxStoreType>;
+    firebase: FirebaseSettingReducerType;
 }
 
 export interface VirtualGamingTabletopCameraState {
@@ -697,6 +700,37 @@ class VirtualGamingTabletop extends React.Component<VirtualGamingTabletopProps, 
         );
     }
 
+    renderFirebaseMenu() {
+        const loggedInUser = this.props.loggedInUser;
+        return (!loggedInUser || loggedInUser.emailAddress !== this.props.tabletop.gm) ? null : (
+            <div>
+                <hr/>
+                <button onClick={() => {
+                    //TODO: Verify firebase config, and other required checks/preparation 
+                    //before offering option to enable it.
+                    const modalText = this.props.firebase.enabled === true
+                        ? "Firebase is currently enabled, are you sure you'd like to deactivate Firebase integration?"
+                        : "Firebase is currently disabled, are you sure you'd like to activate Firebase integration?";
+                    const yesOption = this.props.firebase.enabled === true
+                        ? "Deactivate Firebase"
+                        : "Enable Firebase";
+                    this.context.promiseModal && this.context.promiseModal({
+                        children: modalText,
+                        options: [yesOption, 'Cancel']
+                    })
+                    .then((response) => {
+                        if (response === yesOption) {
+                            this.props.dispatch(updateFirebaseSettingAction({
+                                ...this.props.firebase, 
+                                enabled: !this.props.firebase.enabled
+                            }));
+                        }
+                    })
+                }}>Firebase Settings</button>
+            </div>
+        );
+    }
+
     renderMenu() {
         return (
             <div className={classNames('controlPanel', {
@@ -710,6 +744,7 @@ class VirtualGamingTabletop extends React.Component<VirtualGamingTabletopProps, 
                         {this.renderEveryoneMenu()}
                         {this.renderGMOnlyMenu()}
                         {this.renderDriveMenuButtons()}
+                        {this.renderFirebaseMenu()}
                     </div>
                 </div>
             </div>
@@ -1171,7 +1206,8 @@ function mapStoreToProps(store: ReduxStoreType) {
         loggedInUser: getLoggedInUserFromStore(store),
         connectedUsers: getConnectedUsersFromStore(store),
         myPeerId: getMyPeerIdFromStore(store),
-        tabletopValidation: getTabletopValidationFromStore(store)
+        tabletopValidation: getTabletopValidationFromStore(store),
+        firebase: getFirebaseSettingsFromStore(store)
     }
 }
 
